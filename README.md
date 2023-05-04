@@ -21,7 +21,8 @@ Create a `wrangler.toml` file, based on `wrangler.toml.example`. Edit it as need
 pnpm deploy
 ```
 
-Past the above guide, we do not offer self hosting support for this project. If you want to host it yourself, you're on your own.
+Past the above guide, we do not offer self hosting support for this project. 
+If you want to host it yourself, you're on your own.
 
 ## Usage
 
