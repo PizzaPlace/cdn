@@ -1,29 +1,17 @@
-name: Deploy Worker
-on: push
+name: Deploy CF Worker
+
+on:
+    push:
+        branches:
+            - main
+
 jobs:
     deploy:
         runs-on: ubuntu-latest
         name: Deploy
         steps:
-            - uses: actions/checkout@v3
-            - uses: pnpm/action-setup@v2.2.4
+            - uses: actions/checkout@v2
+            - name: Publish
+              uses: cloudflare/wrangler-action@2.0.0
               with:
-                version: 8
-
-            - name: Setup Node.js environment
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18
-                  cache: pnpm
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: deploy-worker
-              uses: drivly/deploy-worker@beta-3
-              with:
-                  name: "cdn"
-                  main: "./src/index.ts"
-                  config: "wrangler.toml"
-                  cloudflareAccountId: ${{ secrets.CF_ACCOUNT_ID }}
-                  cloudflareApiToken: ${{ secrets.CF_API_TOKEN }}
+                  apiToken: ${{ secrets.CF_API_TOKEN }}
