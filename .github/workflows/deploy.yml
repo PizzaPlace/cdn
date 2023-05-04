@@ -10,15 +10,15 @@ jobs:
         runs-on: ubuntu-latest
         name: Deploy
         steps:
-            - uses: actions/checkout@v2
-            - uses: pnpm/action-setup@v2.2.4
+            - uses: actions/checkout@2
+            - uses: pnpm/action-setup@2.2.4
               with:
                   node-version: 18
             - name: Install Dependencies
               run: |
                   pnpm install
             - name: Publish
-              uses: cloudflare/wrangler-action@v2.0.0
+              uses: cloudflare/wrangler-action@2.0.0
               with:
                   apiToken: ${{ secrets.CF_API_TOKEN }}
                   preCommand: pnpm install
