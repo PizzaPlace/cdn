@@ -2,7 +2,7 @@
 
 > This project was originally created by [SerenModz21](https://github.com/SerenModz21/). It was adapted for use by the PizzaPlace team.
 
-![GitHub](http://172.28.240.1:8787/eaZhHJvU.png)
+![GitHub](https://cdn.pizzaplace.workers.dev/BJHqCABo.png)
 
 This project is a Cloudflare Worker that serves static assets from a Cloudflare R2 store.
 It is open source for the sake of transparency and to allow others to use it as a quick CDN to host for their own use cases.
