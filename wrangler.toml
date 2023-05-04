@@ -8,6 +8,10 @@ account_id = "7b295e242c36fa2ab689fa91b5c70e59"
 # This variable is used to determine whether or not to use the Workers Dev environment. See https://developers.cloudflare.com/workers/wrangler/configuration/#inheritable-keys
 workers_dev = false
 
+routes = [
+    "cdn.pizzaplace.workers.dev/*"
+]
+
 [[r2_buckets]]
 # This is the bucket (storage space) that will be used to store the files that are uploaded to the CDN
 binding = "CDN_BUCKET"
