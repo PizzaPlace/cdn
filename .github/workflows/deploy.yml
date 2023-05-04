@@ -1,0 +1,15 @@
+name: Deploy Worker
+on: push
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        steps:
+            - uses: actions/checkout@v3
+            - name: deploy-worker
+              uses: drivly/deploy-worker@beta-3
+              with:
+                  name: "cdn"
+                  main: "./src/index.ts"
+                  cloudflareAccountId: ${{ secrets.CF_ACCOUNT_ID }}
+                  cloudflareApiToken: ${{ secrets.CF_API_TOKEN }}
