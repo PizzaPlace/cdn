@@ -24,7 +24,7 @@ export function auth(): Middleware {
     return async (c, next) => {
         const missingAccess = () =>
             c.json(
-                { success: false, error: "This maze isn't meant for you.." },
+                { success: false, error: "For you this maze isn't" },
                 401
             );
 
