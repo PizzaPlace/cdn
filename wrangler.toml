@@ -1,0 +1,15 @@
+# Meta information for the project
+name = "cdn"
+main = "src/index.ts"
+compatibility_date = "2023-05-04"
+send_metrics = false
+account_id = "7b295e242c36fa2ab689fa91b5c70e59"
+
+# This variable is used to determine whether or not to use the Workers Dev environment. See https://developers.cloudflare.com/workers/wrangler/configuration/#inheritable-keys
+workers_dev = false
+
+[[r2_buckets]]
+# This is the bucket (storage space) that will be used to store the files that are uploaded to the CDN
+binding = "CDN_BUCKET"
+bucket_name = "cdn-bucket"
+preview_bucket_name = "cdn-bucket"

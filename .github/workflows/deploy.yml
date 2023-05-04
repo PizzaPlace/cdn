@@ -11,5 +11,6 @@ jobs:
               with:
                   name: "cdn"
                   main: "./src/index.ts"
+                  config: "wrangler.toml"
                   cloudflareAccountId: ${{ secrets.CF_ACCOUNT_ID }}
                   cloudflareApiToken: ${{ secrets.CF_API_TOKEN }}
