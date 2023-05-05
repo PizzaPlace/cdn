@@ -16,12 +16,13 @@ pnpm i
 ```
 
 Create a `wrangler.toml` file, based on `wrangler.toml.example`. Edit it as needed.
+You will also need to configure some secrets. However, this is too much of a long winded process to explain here, so please refer to the [Cloudflare documentation](https://developers.cloudflare.com/workers/cli-wrangler/commands#secret) for more information.
 
 ```bash
 pnpm deploy
 ```
 
-Past the above guide, we do not offer self hosting support for this project. 
+Past the above guide, we do not offer self hosting support for this project.
 If you want to host it yourself, you're on your own.
 
 ## Usage
