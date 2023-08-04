@@ -31,9 +31,7 @@ export function auth(): Middleware {
         if (!header) return missingAccess();
 
         const user = (await c.env.ACCESS_TOKEN) === header ? header : false;
-        console.log(header);
-        console.log(user);
-
+        
         if (!user)
             return c.json({ success: false, error: "Invalid Token" }, 401);
 

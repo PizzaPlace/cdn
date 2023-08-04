@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { nanoid } from "nanoid";
 import { Path } from "@lifaon/path";
 import { cache, auth, idLength, type Options } from "./utils";
-import { unstable_dev } from "wrangler";
 
 const app = new Hono<Options>();
 
@@ -43,7 +42,7 @@ app.post("/upload", auth(), async (c) => {
 
     let filename;
     if (slug) {
-        filename = slug;
+        filename = encodeURIComponent(slug as string);
     } else {
         filename = nanoid(idLength(c.req.header("Name-Length"), 8));
     }
