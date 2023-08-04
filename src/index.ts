@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { nanoid } from "nanoid";
 import { Path } from "@lifaon/path";
 import { cache, auth, idLength, type Options } from "./utils";
+import { unstable_dev } from "wrangler";
 
 const app = new Hono<Options>();
 
@@ -9,7 +10,7 @@ const app = new Hono<Options>();
 // https://developers.cloudflare.com/cache/about/cache-control#cache-control-directives
 const cacheControl = "public, max-age=31536000, s-maxage=7200";
 
-app.get("/", (c) => {
+app.get("/", async (c) => {
     return c.redirect(c.env.REDIRECT_URL, 301);
 });
 
@@ -30,18 +31,24 @@ app.get("/:key", cache(), async (c) => {
 });
 
 app.post("/upload", auth(), async (c) => {
-    const filename = nanoid(idLength(c.req.header("Name-Length"), 8));
-    const { image } = await c.req.parseBody();
+    const { media, slug } = await c.req.parseBody();
 
-    if (!image) return c.notFound();
+    if (!media) return c.notFound();
 
-    if (!(image instanceof File)) {
-        return c.json({ success: false, error: "Invalid image" }, 400);
+    if (!(media instanceof File)) {
+        return c.json({ success: false, error: "Invalid media" }, 400);
     }
 
-    const arrayBuffer = await image.arrayBuffer();
+    const arrayBuffer = await media.arrayBuffer();
 
-    const { ext } = new Path(image.name).stemAndExtOrThrow();
+    let filename;
+    if (slug) {
+        filename = slug;
+    } else {
+        filename = nanoid(idLength(c.req.header("Name-Length"), 8));
+    }
+
+    const { ext } = new Path(media.name).stemAndExtOrThrow();
     const fileWithExt = filename + ext;
 
     const url = new URL(c.req.url);
@@ -49,7 +56,7 @@ app.post("/upload", auth(), async (c) => {
 
     await c.env.CDN_BUCKET.put(fileWithExt, arrayBuffer, {
         httpMetadata: {
-            contentType: image.type,
+            contentType: media.type,
             cacheControl: cacheControl,
         },
         customMetadata: {
@@ -59,7 +66,7 @@ app.post("/upload", auth(), async (c) => {
 
     return c.json({
         success: true,
-        name: image.name,
+        name: media.name,
         url: url.toString(),
     });
 });
@@ -67,9 +74,16 @@ app.post("/upload", auth(), async (c) => {
 app.delete("/:key", auth(), async (c) => {
     const key = c.req.param("key");
 
-    await c.env.CDN_BUCKET.delete(key);
+    const object = await c.env.CDN_BUCKET.get(key);
+    if (!object) {
+        return c.json({ success: false, error: "File not found in the storage bucket, re-check the filename." }, 404);
+    }
 
-    return c.json({ success: true, name: key });
+    await c.env.CDN_BUCKET.delete(key).catch((err) => {
+        return c.json({ success: false, error: err.toString() }, 500);
+    });
+
+    return c.json({ success: true, name: `${key} has been deleted from the storage bucket, bear in mind that it may take a few minutes for the CDN to update.` });
 });
 
 app.onError((error, c) => {

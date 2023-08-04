@@ -3,7 +3,6 @@ import type { MiddlewareHandler } from "hono";
 export type Options = {
     Bindings: {
         CDN_BUCKET: R2Bucket;
-        SENTRY_DSN: string;
         ACCESS_TOKEN: string;
         REDIRECT_URL: string;
     };
