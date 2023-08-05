@@ -10,3 +10,7 @@ account_id = "..."
 binding = "CDN_BUCKET"
 bucket_name = "cdn-bucket"
 preview_bucket_name = "cdn-bucket"
+
+[vars]
+ACCESS_TOKEN = ""
+REDIRECT_URL = ""

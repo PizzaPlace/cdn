@@ -13,8 +13,11 @@ app.get("/", async (c) => {
     return c.redirect(c.env.REDIRECT_URL, 301);
 });
 
-app.get("/:key", cache(), async (c) => {
-    const key = c.req.param("key");
+app.get("/*", async (c) => {
+    let key = c.req.path
+
+    // remove first character from key
+    if (key.startsWith("/")) key = key.slice(1);
 
     const object = await c.env.CDN_BUCKET.get(key);
     if (!object) return c.notFound();
@@ -42,7 +45,7 @@ app.post("/upload", auth(), async (c) => {
 
     let filename;
     if (slug) {
-        filename = encodeURIComponent(slug as string);
+        filename = slug
     } else {
         filename = nanoid(idLength(c.req.header("Name-Length"), 8));
     }
